@@ -1,0 +1,17 @@
+---
+- hosts: localhost 
+  pre_tasks:
+    - name: pre-tasks | include default configuration
+      include_vars: roles/osx/defaults/main.yml
+    - name: pre-tasks | include osx vars
+      include_vars: "{{ ansible_distribution|lower }}.yml"
+
+  tasks:
+    - { import_tasks: roles/osx/tasks/configure-system-preferences.yml, when: ansible_distribution == "MacOSX", tags: system-preferences }
+    - { import_tasks: roles/osx/tasks/macports.yml, when: ansible_distribution == "MacOSX", tags: macports }
+    - { import_tasks: roles/osx/tasks/homebrew.yml, when: ansible_distribution == "MacOSX", tags: homebrew  }
+    - { import_tasks: roles/common/tasks/finish.yml, tags: final }
+
+  roles:
+    - common
+    - { role: osx, when: ansible_distribution == "MacOSX" }

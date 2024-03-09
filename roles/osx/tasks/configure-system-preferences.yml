@@ -1,0 +1,408 @@
+- block:
+  - name: osx | setup | do not create .DS_Store files
+    osx_defaults: { domain: com.apple.desktopservices, key: DSDontWriteNetworkStores, type: int, value: 1 }
+
+  - name: osx | system preferences | notifications | notification center | show previews
+    osx_defaults: { domain: com.apple.ncprefs, key: content_visibility, type: int, value: "{{ item.value }}" }
+    loop:
+      - { name: Always, value: 3 }
+      - { name: When Unlocked, value: 2 }
+      - { name: Never, value: 1 }
+    when: notifications_show_previews is defined and item.name == notifications_show_previews
+
+  - name: osx | system preferences | sound | sound effects | alert sound
+    osx_defaults: { domain: NSGlobalDomain, key: com.apple.sound.beep.sound, type: string, value: "{{ item.value }}" }
+    loop:
+      - { name: Boop, value: /System/Library/Sounds/Tink.aiff/Tink.aiff }
+      - { name: Breeze, value: /System/Library/Sounds/Tink.aiff/Blow.aiff }
+      - { name: Bubble, value: /System/Library/Sounds/Tink.aiff/Pop.aiff }
+      - { name: Crystal, value: /System/Library/Sounds/Tink.aiff/Glass.aiff }
+      - { name: Funky, value: /System/Library/Sounds/Tink.aiff/Funk.aiff }
+      - { name: Heroine, value: /System/Library/Sounds/Tink.aiff/Hero.aiff }
+      - { name: Jump, value: /System/Library/Sounds/Tink.aiff/Frog.aiff }
+      - { name: Mezzo, value: /System/Library/Sounds/Tink.aiff/Basso.aiff }
+      - { name: Pebble, value: /System/Library/Sounds/Tink.aiff/Bottle.aiff }
+      - { name: Pluck, value: /System/Library/Sounds/Tink.aiff/Purr.aiff }
+      - { name: Pong, value: /System/Library/Sounds/Tink.aiff/Morse.aiff }
+      - { name: Sonar, value: /System/Library/Sounds/Tink.aiff/Ping.aiff }
+      - { name: Sonumi, value: /System/Library/Sounds/Tink.aiff/Sosumi.aiff }
+      - { name: Submerge, value: /System/Library/Sounds/Tink.aiff/Submarine.aiff }
+    when: sound_effect_alert_sound is defined and item.name == sound_effect_alert_sound 
+
+  - name: osx | system preferences | sound | sound effects | alert volume
+    osx_defaults: { domain: NSGlobalDomain, key: com.apple.sound.beep.volume, type: string, value: "{{ sound_effect_alert_volume }}" }
+    when: sound_effect_alert_volume is defined
+
+  - name: osx | system preferences | sound | sound effects | play sound on startup
+    shell: sudo nvram StartupMute="{{ item.value }}"
+    become: true
+    loop:
+      - { bool: true, value: '%00' }
+      - { bool: false, value: '%01' }
+    when: sound_effect_play_startup_sound is defined and item.bool== sound_effect_play_startup_sound
+
+  - name: osx | system preferences | sound | sound effects | play user interface sound effect
+    osx_defaults: { domain: NSGlobalDomain, key: com.apple.sound.uiaudio.enabled, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: true, value: 1 }
+      - { bool: false, value: 0 }
+    when: sound_effect_play_ui_sfx is defined and item.bool == sound_effect_play_ui_sfx
+
+  - name: osx | system preferences | sound | sound effects | play feedback when volume is changed
+    osx_defaults: { domain: NSGlobalDomain, key: com.apple.sound.beep.feedback, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: true, value: 1 }
+      - { bool: false, value: 0 }
+    when: sound_effect_feedback_on_volume_change is defined and item.bool == sound_effect_feedback_on_volume_change
+
+  - name: osx | system preferences | appearance | appearance
+    osx_defaults: { domain: NSGlobalDomain, key: "{{ item.key }}", type: "{{ item.type }}", value: "{{ item.value }}" }
+    loop:
+      - { name: Light, key: AppleInterfaceStyle, type: string, value: "" }
+      - { name: Dark, key: AppleInterfaceStyle, type: string, value: "Dark" }
+      - { name: Auto, key: AppleInterfaceStyleSwitchesAutomatically, type: bool, value: true }
+    when: appearance_ui_scheme is defined and item.name == appearance_ui_scheme
+
+  - name: osx | system preferences | appearance | accent color | multicolor
+    osx_defaults: { domain: NSGlobalDomain, key: AppleAccentColor, state: absent }
+    when: appearance_accent_color is defined and appearance_accent_color == "Multicolor"
+
+  - name: osx | system preferences | appearance | accent color | set color
+    osx_defaults: { domain: NSGlobalDomain, key: AppleAccentColor, type: "{{ item.type}}", value: "{{ item.value }}" }
+    loop:
+      - { name: Blue, type: int, value: 4  }
+      - { name: Purple, type: int, value: 5 }
+      - { name: Pink, type: int, value: 6 }
+      - { name: Red, type: int, value: 0 }
+      - { name: Orange, type: int, value: 1 }
+      - { name: Yellow, type: int, value: 2 }
+      - { name: Green, type: int, value: 3 }
+      - { name: Graphite, type: string, value: "-1" }
+    when: appearance_accent_color is defined and item.name == appearance_accent_color 
+
+
+  - name: osx | system preferences | appearance | highlight color | accent color
+    osx_defaults: { domain: NSGlobalDomain, key: AppleHighlightColor, state: absent }
+    when: appearance_highlight_color is defined and appearance_highlight_color == "Accent Color"
+
+  - name: osx | system preferences | appearance | highlight color | set color
+    osx_defaults: { domain: NSGlobalDomain, key: AppleHighlightColor, type: string, value: "{{ item.value }}" }
+    loop:
+      - { name: Blue, value: 0.698039 0.843137 1.000000 Blue }
+      - { name: Purple, value: 0.968627 0.831373 1.000000 Purple }
+      - { name: Pink, value: 1.000000 0.749020 0.823529 Pink }
+      - { name: Red, value: 1.000000 0.733333 0.721569 Red }
+      - { name: Orange, value: 1.000000 0.874510 0.701961 Orange }
+      - { name: Yellow, value: 1.000000 0.937255 0.690196 Yellow }
+      - { name: Green, value: 0.752941 0.964706 0.678431 Green }
+      - { name: Graphite, value: 0.847059 0.847059 0.862745 Graphite }
+    when: appearance_highlight_color is defined and item.name == appearance_highlight_color
+
+  - name: osx | system preferences | appearance | allow wallpaper tinting in windows
+    osx_defaults: { domain: NSGlobalDomain, key: AppleReduceDesktopTinting, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: true, value: 1 }
+      - { bool: false, value: 0 }
+    when: appearance_allow_wallpaper_tinting is defined and item.bool == appearance_allow_wallpaper_tinting
+
+  - name: osx | system preferences | apperance | sidebar icon size
+    osx_defaults: { domain: NSGlobalDomain, key: NSTableViewDefaultSizeMode, type: int, value: "{{ item.value }}" }
+    loop:
+      - { name: Small, value: 1 }
+      - { name: Medium, value: 2 }
+      - { name: Large, value: 3 }
+    when: appearance_sidebar_icon_size is defined and item.name == appearance_sidebar_icon_size
+
+  - name: osx | system preferences | scroll bars | show scroll bars
+    osx_defaults: { domain: NSGlobalDomain, key: AppleShowScrollBars, type: string, value: "{{ item.value }}" }
+    loop:
+      - { name: Automatic, value: Automatic }
+      - { name: When scrolling, value: WhenScrolling }
+      - { name: Always, value: Always }
+    when: appearance_show_scroll_bars is defined and item.name == appearance_show_scroll_bars
+
+  - name: osx | system preferences | scroll bars | click in the scroll bar behavior
+    osx_defaults: { domain: NSGlobalDomain, key: AppleScrollerPagingBehavior, type: int, value: "{{ item.value }}" }
+    loop:
+      - { name: Page, value: 0 }
+      - { name: Spot, value: 1 }
+    when: appearance_click_scroll_bar is defined and item.name == appearance_click_scroll_bar
+
+  - name: osx | system preferences | control center modules | wifi
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible WiFi, type: int, value: "{{ item.value }}" }
+    loop:
+      - { name: Hide, value: 0 }
+      - { name: Show, value: 1 }
+    when: control_center_wifi is defined and item.name == control_center_wifi
+    notify: restart menubar
+
+  - name: osx | system preferences | control center modules | bluetooth
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible Bluetooth, type: int, value: "{{ item.value }}" }
+    loop:
+      - { name: Hide, value: 0 }
+      - { name: Show, value: 1 }
+    when: control_center_bluetooth is defined and item.name == control_center_bluetooth
+    notify: restart menubar
+
+  - name: osx | system preferences | control center modules | airdrop
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible AirDrop, type: int, value: "{{ item.value }}" }
+    loop:
+      - { name: Hide, value: 0 }
+      - { name: Show, value: 1 }
+    when: control_center_airdrop is defined and item.name == control_center_airdrop
+    notify: restart menubar
+
+  - name: osx | system preferences | control center modules | focus
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible FocusModes, type: int, value: "{{ item.value }}" }
+    loop:
+      - { name: Hide, value: 0 }
+      - { name: Show, value: 1 }
+    when: control_center_focus is defined and item.name == control_center_focus
+    notify: restart menubar
+
+  - name: osx | system preferences | control center modules | stage manager
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible StageManager, type: int, value: "{{ item.value }}" }
+    loop:
+      - { name: Hide, value: 0 }
+      - { name: Show, value: 1 }
+    when: control_center_stage_manager is defined and item.name == control_center_stage_manager
+    notify: restart menubar
+
+  - name: osx | system preferences | control center modules | screen mirroring
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible ScreenMirroring, type: int, value: "{{ item.value }}" }
+    loop:
+      - { name: Hide, value: 0 }
+      - { name: Always, value: 1 }
+    when: control_center_screen_mirroring is defined and item.name == control_center_screen_mirroring
+    notify: restart menubar
+
+  - name: osx | system preferences | control center modules | display
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible Display, type: int, value: "{{ item.value }}" }
+    loop:
+      - { name: Hide, value: 0 }
+      - { name: Always, value: 1 }
+    when: control_center_display is defined and item.name == control_center_display
+    notify: restart menubar
+
+  - name: osx | system preferences | control center modules | sound
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible Sound, type: int, value: "{{ item.value }}" }
+    loop:
+      - { name: Hide, value: 0 }
+      - { name: Always, value: 1 }
+    when: control_center_sound is defined and item.name == control_center_sound
+    notify: restart menubar
+
+  - name: osx | system preferences | control center modules | now playing
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible NowPlaying, type: int, value: "{{ item.value }}" }
+    loop:
+      - { name: Hide, value: 0 }
+      - { name: Always, value: 1 }
+    when: control_center_now_playing is defined and item.name == control_center_now_playing
+    notify: restart menubar
+
+  - name: osx | system preferences | other modules | accessibilty shortcuts | show in menu bar
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible AccessibilityShortcuts, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: control_center_accessibility_menu_bar is defined and item.bool == control_center_accessibility_menu_bar
+    notify: restart menubar
+
+  - name: osx | system preferences | other modules | battery | show in menu bar
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible Battery, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: control_center_battery_menu_bar is defined and item.bool == control_center_battery_menu_bar
+    notify: restart menubar
+
+  - name: osx | system preferences | other modules | battery | show in menu bar
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible Battery, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: control_center_battery_menu_bar is defined and item.bool == control_center_battery_menu_bar
+    notify: restart menubar
+
+  - name: osx | system preferences | other modules | music recognition | show in menu bar
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible MusicRecognition, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: control_center_shazam_menu_bar is defined and item.bool == control_center_shazam_menu_bar
+    notify: restart menubar
+
+  - name: osx | system preferences | other modules | hearing | show in menu bar
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible Hearing, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: control_center_hearing_menu_bar is defined and item.bool == control_center_hearing_menu_bar
+    notify: restart menubar
+
+  - name: osx | system preferences | other modules | keyboard brightness | show in menu bar
+    osx_defaults: { domain: com.apple.controlcenter, key: NSStatusItem Visible KeyboardBrightness, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: control_center_keyboard_brightness_menu_bar is defined and item.bool == control_center_keyboard_brightness_menu_bar
+    notify: restart menubar
+
+  - name: osx | dock | remove apps
+    osx_defaults: { domain: com.apple.dock, key: persistent-apps, state: absent }
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | dock | tile size
+    osx_defaults: { domain: com.apple.dock, key: tilesize, type: float, value: "{{ dock_size|int }}" }
+    when: dock_size is defined and dock_size > 0 and dock_size <= 128
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | dock | magnification size
+    osx_defaults:
+      loop:
+        - { domain: com.apple.dock, key: largesize, type: float, value: "{{ dock_size }}" }
+        - { domain: com.apple.dock, key: magnification, type: int, value: 0 }
+    when: dock_magnification is defined and dock_magnification == 0
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | dock | magnification size 2
+    osx_defaults:
+      loop:
+        - { domain: com.apple.dock, key: largesize, type: int, value: "{{ dock_magnification }}" }
+        - { domain: com.apple.dock, key: magnification, type: int, value: 1 }
+    when: dock_magnification is defined and dock_magnification != dock_size and dock_magnification > 0 and dock_magnification <= 128
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | dock | position
+    osx_defaults: { domain: com.apple.dock, key: orientation, type: string, value: "{{ dock_position|lower }}" }
+    when: dock_position is defined
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | dock | minimize window effect
+    osx_defaults: { domain: com.apple.dock, key: mineffect, type: string, value: "{{ dock_minimize_effect|lower }}" }
+    when: dock_minimize_effect is defined
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | dock | double-click title action
+    osx_defaults: { domain: NSGlobalDomain, key: AppleActionOnDoubleClick, type: string, value: "{{ item.value }}" }
+    loop:
+      - { name: Minimize, value: Minimize }
+      - { name: Zoom, value: Maximize }
+      - { name: None, value: None }
+    when: dock_double_click_action is defined and dock_double_click_action == item.name
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | dock | minimize windows into icon
+    osx_defaults: { domain: com.apple.dock, key: minimize-to-application, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: dock_minimize_to_application_icon is defined and dock_minimize_to_application_icon == item.bool
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | dock | auto hide/show dock
+    osx_defaults: { domain: com.apple.dock, key: autohide, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: dock_automatically_hide_show is defined and dock_automatically_hide_show == item.bool
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | dock | animate opening applications
+    osx_defaults: { domain: com.apple.dock, key: launchanim, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: dock_animate_oppening_applications is defined and dock_animate_oppening_applications == item.bool
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | dock | show indicators for open applications
+    osx_defaults: { domain: com.apple.dock, key: show-process-indicators, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: dock_show_indicators_for_open_applications is defined and dock_show_indicators_for_open_applications == item.bool
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | dock | show suggested and recent apps in dock
+    osx_defaults: { domain: com.apple.dock, key: show-recents, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: dock_show_suggested_and_recent_applications is defined and dock_show_suggested_and_recent_applications == item.bool
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | mission control | rearrange spaces based on recent use
+    osx_defaults: { domain: com.apple.dock, key: mru-spaces, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: mission_control_auto_rearrange_spaces_based_on_recent_use is defined and mission_control_auto_rearrange_spaces_based_on_recent_use == item.bool
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | mission control | switch to a space with open windows
+    osx_defaults: { domain: NSGlobalDomain, key: AppleSpacesSwitchOnActivate, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: mission_control_switch_to_space_with_open_application is defined and mission_control_switch_to_space_with_open_application == item.bool
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | mission control | group windows by application
+    osx_defaults: { domain: com.apple.dock, key: expose-group-apps, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: mission_control_group_windows_by_application is defined and mission_control_group_windows_by_application == item.bool
+    notify: restart dock
+
+  - name: osx | system preferences | desktop & dock | mission control | displays have separate spaces
+    osx_defaults: { domain: com.apple.spaces, key: span-displays, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: mission_control_displays_have_separate_spaces is defined and mission_control_displays_have_separate_spaces == item.bool
+    notify: restart dock
+
+  - name: osx | system preferences | keyboard | key repeat rate
+    osx_defaults: { domain: NSGlobalDomain, key: KeyRepeat, type: float, value: "{{ keyboard_key_repeat_rate }}" }
+    when: keyboard_key_repeat_rate is defined
+
+  - name: osx | system preferences | keyboard | delay until repeat
+    osx_defaults: { domain: NSGlobalDomain, key: InitialKeyRepeat, type: float, value: "{{ keyboard_delay_until_repeat }}" }
+    when: keyboard_delay_until_repeat is defined
+
+  - name: osx | system preferences | trackpad | point & click | tracking speed
+    osx_defaults: { domain: NSGlobalDomain, key: com.apple.trackpad.scaling, type: float, value: "{{ trackpad_point_click_tracking_speed }}" }
+    when: trackpad_point_click_tracking_speed is defined
+
+  - name: osx | system preferences | trackpad | point & click | click
+    osx_defaults: { domain: com.apple.AppleMultitouchTrackpad, key: FirstClickThreshold, type: int, value: "{{ item.value }}" }
+    loop:
+      - { name: Light, value: 0 }
+      - { name: Medium, value: 1 }
+      - { name: Firm, value: 2 }
+    when: trackpad_click is defined and trackpad_click == item.name
+
+  - name: osx | system preferences | trackpad | point & click | click
+    osx_defaults: { domain: com.apple.AppleMultitouchTrackpad, key: SecondClickThreshold, type: int, value: "{{ item.value }}" }
+    loop:
+      - { name: Light, value: 0 }
+      - { name: Medium, value: 1 }
+      - { name: Firm, value: 2 }
+    when: trackpad_click is defined and trackpad_click == item.name
+
+  - name: osx | system preferences | trackpad | point & click | tap to click
+    osx_defaults: { domain: com.apple.AppleMultitouchTrackpad, key: Clicking, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: trackpad_tap_click is defined and trackpad_tap_click == item.bool
+
+  - name: osx | system preferences | trackpad | scroll & zoom | natural scrolling
+    osx_defaults: { domain: NSGlobalDomain, key: com.apple.swipescrolldirection, type: int, value: "{{ item.value }}" }
+    loop:
+      - { bool: false, value: 0 }
+      - { bool: true, value: 1 }
+    when: trackpad_scroll_natural_scrolling is defined and trackpad_scroll_natural_scrolling == item.value
+

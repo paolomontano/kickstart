@@ -1,0 +1,83 @@
+if empty(glob('~/.config/vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.config/vim/plugged')
+
+" Utility
+Plug 'scrooloose/nerdtree'                                      " tree explorer for vim
+Plug 'itchyny/lightline.vim'                                    " configurable statusline/tabline
+Plug 'flazz/vim-colorschemes'                                   " bundle of color schemes
+Plug 'ctrlpvim/ctrlp.vim'                                       " fuzzy path finder
+Plug 'mhinz/vim-startify'                                       " fancy start screen
+Plug 'tpope/vim-surround'                                       " highlight cursor surrounds
+Plug 'vifm/vifm.vim'                                            " file manager with vim-like controls
+Plug 'ap/vim-css-color'                                         " context color name highlighter
+Plug 'frazrepo/vim-rainbow'                                     " show levels of parenthesis
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'                  " file extension highlighting
+Plug 'junegunn/fzf'                                             " command-line fuzzy finder
+Plug 'junegunn/fzf.vim'                                         " fzf wrapper for vim
+
+call plug#end()
+
+"""" basic behaviour
+set autoread                                                    " detect changes made on file from external editor
+set completeopt=noinsert,menuone,noselect                       " for phpactor/ncm2
+set cursorline                                                  " highlight current line cursor is on
+set encoding=utf-8                                              " (default: latin1)
+set fileformat=unix                                             " in case Windows might set CRLF
+set laststatus=2                                                " always display the status bar
+set lazyredraw                                                  " do not redraw when running macros
+set noswapfile                                                  " disable swap files
+set novisualbell                                                " no visual flashes
+set number                                                      " show line numbers
+set ruler                                                       " show cursor position
+set showmatch                                                   " highlight matching parentheses/brackets
+set wildmenu                                                    " visual autocomplete for command menu
+set nowrap                                                      " disable word wrap
+
+"""" tab settings
+set autoindent                                                  " copy indent to new line
+set expandtab                                                   " <TAB> keypress to spaces
+set shiftwidth=4                                                " force width
+set smartindent                                                 " add indent after brackets
+set softtabstop=4                                               " backspace after <TAB> removes set spaces
+set tabstop=4                                                   " tab viewed as width 4
+
+"""" fold behaviour
+set foldcolumn=1                                                " specify width on side of window
+set foldenable                                                  " enable code folding
+
+"""" search settings
+set history=2048                                                " size of history recorded
+set hlsearch                                                    " highlight search results
+set incsearch                                                   " show matches as search is typed
+
+"""" appearance
+set colorcolumn=80,120
+set cmdheight=2                                                 " taller command line
+set noerrorbells                                                " no beeps for flashes
+set showcmd                                                     " show command in bottom bar
+set title                                                       " title of window will be set
+
+colorscheme bubblegum-256-light
+syntax on                                                       " syntax highlighting
+
+"""" plugin configuraitons
+let g:ctrlp_working_path_mode = 'ra'                            " nearest ancestor of current file and current directory of file
+let g:lightline = {
+    \ 'colorscheme': 'seoul256',
+    \ }
+let g:rainbow_active = 1
+let NERDTreeShowHidden=1                                        " see hidden files in sidebar
+
+"""" keyboard shortcuts
+let g:ctrlp_map = '<C-p>'                                       " hotkey for CtrlP
+let g:ctrlp_cmd = 'CtrlP'                                       " command for CtrlP
+nnoremap <C-l><C-l> :set relativenumber!<CR>                    " toggle relative / absolute line numbers
+map <silent> <C-k><C-k> :NERDTreeToggle<CR>                     " toggle file sidebar
+map <silent> <C-k><C-l> :colorscheme bubblegum-256-light<CR>    " toggle light mode
+map <silent> <C-k><C-j> :colorscheme bubblegum-256-dark<CR>     " toggle dark mode
+

@@ -1,0 +1,6 @@
+- block:
+  - name: common | config | .config directory
+    file:
+      path: ~/.config
+      state: directory
+

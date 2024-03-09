@@ -1,0 +1,14 @@
+- block:
+  - name: osx | macports | update macports and ports tree
+    become: true
+    macports:
+      selfupdate: true
+      upgrade: true
+
+  - name: osx | macports | install packages
+    become: true
+    macports:
+      name: "{{ item }}"
+    loop:
+      "{{ macports_packages }}"
+    

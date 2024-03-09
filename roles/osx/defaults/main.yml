@@ -1,0 +1,50 @@
+---
+notifications_show_previews: When Unlocked
+
+sound_effect_alert_sound: Boop
+sound_effect_alert_volume: 1
+sound_effect_play_startup_sound: true
+sound_effect_play_ui_sfx: true
+sound_effect_feedback_on_volume_change: false
+
+appearance_ui_scheme: Light
+appearance_accent_color: Multicolor
+appearance_highlight_color: Accent Color
+appearance_sidebar_icon_size: Medium
+appearance_allow_wallpaper_tinting: true
+appearance_show_scroll_bars: Automatic
+appearance_click_scroll_bar: Page
+
+control_center_accessibility_menu_bar: false
+control_center_battery_menu_bar: true
+#control_center_battery_percentage: false
+control_center_shazam_menu_bar: false
+control_center_hearing_menu_bar: false
+control_center_hearing_control_center: false
+control_center_keyboard_brightness_menu_bar: false
+
+dock_size: 64
+dock_magnification:
+dock_position: Bottom
+dock_minimize_effect: Genie
+dock_double_click_action: Zoom
+dock_minimize_to_application_icon: false
+dock_automatically_hide_show: false
+dock_animate_oppening_applications: true
+dock_show_indicators_for_open_applications: true
+dock_show_suggested_and_recent_applications: true
+
+mission_control_auto_rearrange_spaces_based_on_recent_use: true
+mission_control_switch_to_space_with_open_application: false
+mission_control_group_windows_by_application: false
+mission_control_displays_have_separate_spaces: true
+
+keyboard_key_repeat_rate:
+keyboard_delay_until_repeat:
+
+trackpad_point_click_tracking_speed: 0.5
+trackpad_click: Medium
+trackpad_force_click_haptic_feedback: true
+trackpad_tap_click: false
+trackpad_scroll_natural_scrolling: true
+

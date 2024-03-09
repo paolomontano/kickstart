@@ -1,0 +1,9 @@
+---
+- name: restart dock
+  command: killall Dock
+  ignore_errors: yes
+
+- name: restart menubar
+  command: killall SystemUIServer
+  ignore_errors: yes
+

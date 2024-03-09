@@ -1,0 +1,7 @@
+---
+profile_customizations:
+  - alias ll="ls -lah"
+  - alias tt="tmux a -t base || tmux new -s base"
+  - export XDG_CONFIG_HOME={{ home_dir}}/.config
+  - export STARSHIP_CONFIG=$XDG_CONFIG_HOME/starship/starship.toml
+  - export STARSHIP_CACHE=$XDG_CONFIG_HOME/starship/cache

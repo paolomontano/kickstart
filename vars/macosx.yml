@@ -1,0 +1,100 @@
+---
+home_dir: /Users/paolo
+
+homebrew_formulae: []
+
+homebrew_casks:
+  - 1password
+  - brave-browser
+  - discord
+  - firefox
+  - google-chrome
+  - jetbrains-toolbox
+  - notion
+  - obsidian
+  - raycast
+  - telegram
+  - signal
+  - slack
+  - spotify
+  - vlc
+  - whatsapp
+
+homebrew_caks_fonts:
+  - font-fira-code-nerd-font
+  - font-hack-nerd-font
+  - font-iosevka-term-nerd-font
+  - font-intone-mono-nerd-font
+  - font-jetbrains-mono-nerd-font
+  - font-mononoki-nerd-font
+
+macports_packages:
+  - 1password-cli
+  - alacritty
+  - bottom
+  - docker
+  - fish
+  - fzf
+  - git
+  - neovim
+  - ripgrep
+  - starship
+  - tmux
+  - youtube-dl
+
+notifications_show_previews: When Unlocked
+
+sound_effect_alert_sound: Sonar
+sound_effect_play_startup_sound: false
+sound_effect_play_ui_sfx: true
+sound_effect_feedback_on_volume_change: false
+
+appearance_ui_scheme: Auto
+appearance_accent_color: Multicolor
+appearance_highlight_color: Accent Color
+appearance_sidebar_icon_size: Small
+appearance_allow_wallpaper_tinting:
+appearance_show_scroll_bars: Always
+appearance_click_scroll_bar: Spot
+
+control_center_wifi: Hide
+control_center_bluetooth: Hide
+control_center_airdrop: Hide
+control_center_focus: Always
+control_center_stage_manager: Hide
+control_center_screen_mirroring: Hide
+control_center_display: Hide
+control_center_sound: Hide
+control_center_now_playing: Hide
+
+control_center_accessibility_menu_bar:
+control_center_battery_menu_bar:
+control_center_battery_percentage:
+control_center_shazam_menu_bar:
+control_center_keyboard_brightness_menu_bar:
+
+dock_size: 32
+dock_magnification: 32
+dock_position: Left
+dock_minimize_effect: Scale
+dock_minimize_to_application_icon: true
+dock_double_click_action: Zoom
+dock_automatically_hide_show: true
+dock_animate_oppening_applications: true
+dock_show_indicators_for_open_applications: true
+dock_show_suggested_and_recent_applications: false
+
+mission_control_auto_rearrange_spaces_based_on_recent_use: false
+mission_control_switch_to_space_with_open_application: true
+mission_control_group_windows_by_application: false
+mission_control_displays_have_separate_spaces: true
+
+keyboard_key_repeat_rate: 2
+keyboard_delay_until_repeat: 15
+
+trackpad_point_click_tracking_speed: 0.6875
+trackpad_click: Light
+trackpad_force_click_haptic_feedback: true
+trackpad_tap_click: true
+trackpad_scroll_natural_scrolling: false
+

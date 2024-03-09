@@ -1,0 +1,31 @@
+- block:
+  - name: osx | homebrew | update and upgrade
+    homebrew:
+      update_homebrew: true
+      upgrade_all: true
+
+  - name: osx | homebrew | taps
+    homebrew_tap:
+      name: homebrew/cask-fonts
+
+  - name: osx | homebrew | install formulae
+    homebrew_cask:
+      name: "{{ item }}"
+    loop:
+      "{{ homebrew_formulae }}"
+    when: homebrew_formulae is defined and (homebrew_formulae||length>0)
+
+  - name: osx | homebrew | install casks
+    homebrew_cask:
+      name: "{{ item }}"
+    loop:
+      "{{ homebrew_casks }}"
+    when: homebrew_casks is defined
+
+  - name: osx | homebrew | install cask fonts
+    homebrew_cask:
+      name: "{{ item }}"
+    loop:
+      "{{ homebrew_caks_fonts }}"
+    when: homebrew_caks_fonts is defined
+
