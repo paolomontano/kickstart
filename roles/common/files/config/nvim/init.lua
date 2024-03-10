@@ -487,6 +487,7 @@ require('lazy').setup({
   },
   {
     'catppuccin/nvim',
+    name = 'catppuccin-mocha',
     lazy = false,
     priority = 1000,
     config = function()
