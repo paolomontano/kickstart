@@ -491,6 +491,7 @@ require('lazy').setup({
     lazy = false,
     priority = 1000,
     config = function()
+      vim.o.termguicolors = true
       vim.cmd.colorscheme 'catppuccin-mocha'
 
       -- You can configure highlights by doing something like
