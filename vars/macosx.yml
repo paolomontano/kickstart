@@ -36,6 +36,7 @@ macports_packages:
   - fish
   - fzf
   - git
+  - jq
   - neovim
   - ripgrep
   - starship
