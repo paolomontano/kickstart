@@ -1,12 +1,14 @@
 ---
 home_dir: /Users/paolo
 
-homebrew_formulae: []
+homebrew_formulae:
+  - composer
 
 homebrew_casks:
   - 1password
   - brave-browser
   - discord
+  - docker
   - firefox
   - google-chrome
   - jetbrains-toolbox
@@ -41,7 +43,7 @@ macports_packages:
   - ripgrep
   - starship
   - tmux
-  - youtube-dl
+  - yt-dlp
 
 notifications_show_previews: When Unlocked
 
@@ -74,8 +76,8 @@ control_center_battery_percentage:
 control_center_shazam_menu_bar:
 control_center_keyboard_brightness_menu_bar:
 
-dock_size: 32
-dock_magnification: 32
+dock_size: 48
+dock_magnification: 48
 dock_position: Left
 dock_minimize_effect: Scale
 dock_minimize_to_application_icon: true

@@ -9,11 +9,11 @@
       name: homebrew/cask-fonts
 
   - name: osx | homebrew | install formulae
-    homebrew_cask:
+    homebrew:
       name: "{{ item }}"
     loop:
       "{{ homebrew_formulae }}"
-    when: homebrew_formulae is defined and (homebrew_formulae||length>0)
+    when: homebrew_formulae is defined
 
   - name: osx | homebrew | install casks
     homebrew_cask:
