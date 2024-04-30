@@ -19,6 +19,7 @@ homebrew_casks:
   - signal
   - slack
   - spotify
+  - via
   - vlc
   - whatsapp
 
